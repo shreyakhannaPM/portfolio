@@ -1,0 +1,8 @@
+{
+  "name": "shreya-portfolio",
+  "compatibility_date": "2025-01-30",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  }
+}
