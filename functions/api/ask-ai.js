@@ -14,16 +14,22 @@ export async function onRequestPost(context) {
 
         const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`;
 
-        const prompt = `You are a helpful AI assistant on Shreya Khanna's professional portfolio website. 
-        Your goal is to answer questions about her career, skills, and background based on the provided resume details.
-        
-        Keep your answers concise, professional, and highlight her strengths as a Product Manager.
-        If the question is not about Shreya or her work, politely redirect them to ask about her professional experience.
-        
-        Resume Details:
-        ${resumeContext}
-        
-        User Question: ${question}`;
+        // Improved prompt structure with explicit system instruction
+        const systemInstruction = `You are an AI assistant on Shreya Khanna's professional portfolio website. You have full access to her resume and professional background information provided below.
+
+YOUR ROLE:
+- Answer questions about Shreya's career, skills, projects, and experience
+- Be professional, concise, and highlight her strengths
+- Use specific metrics and achievements when relevant
+- If asked about something not in her resume, politely say you don't have that specific information
+
+IMPORTANT: You DO have access to Shreya's complete portfolio information. Use it to answer questions accurately.
+
+=== SHREYA'S PORTFOLIO INFORMATION ===
+${resumeContext}
+=== END OF PORTFOLIO INFORMATION ===`;
+
+        const userMessage = `Based on the portfolio information above, please answer this question: ${question}`;
 
         const geminiResponse = await fetch(geminiUrl, {
             method: 'POST',
@@ -32,7 +38,8 @@ export async function onRequestPost(context) {
             },
             body: JSON.stringify({
                 contents: [{
-                    parts: [{ text: prompt }]
+                    role: 'user',
+                    parts: [{ text: `${systemInstruction}\n\n${userMessage}` }]
                 }]
             })
         });
