@@ -342,57 +342,44 @@
     </footer>
 
     <!-- AI Search Button (Floating) -->
-    <button id="aiSearchBtn" class="ai-search-btn" aria-label="Ask AI about Shreya's experience">
+    <button id="openAISearch" class="ai-search-btn" aria-label="Ask AI about Shreya's experience">
         <span class="ai-icon">🤖</span>
         <span class="ai-text">Ask AI</span>
     </button>
 
     <!-- AI Search Modal -->
-    <div id="searchModal" class="search-modal">
+    <div id="aiSearchModal" class="search-modal">
         <div class="search-modal-content">
             <div class="search-header">
                 <h3>Ask About Shreya's Experience</h3>
-                <button id="closeSearch" class="close-btn" aria-label="Close search">&times;</button>
+                <button class="close-modal" aria-label="Close search">&times;</button>
             </div>
 
-            <!-- API Key Section -->
-            <div id="apiKeySection" class="api-key-section">
-                <p class="api-key-info">
-                    <strong>Setup Required:</strong> Enter your Google Gemini API key to enable AI search.
-                    <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Get a
-                        free API key →</a>
-                </p>
-                <div class="api-key-input-group">
-                    <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key"
-                        class="api-key-input" />
-                    <button id="saveApiKey" class="btn btn-primary">Save Key</button>
+            <!-- Chat Messages Area -->
+            <div id="aiChatMessages" class="chat-container">
+                <div class="chat-message assistant-message">
+                    <div class="message-content">
+                        <div class="text">Hi! I'm an AI assistant trained on Shreya's professional background. What
+                            would you like to know about her experience?</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Example Questions -->
+            <!-- Suggestion Chips -->
             <div class="example-questions">
                 <p class="example-label">Try asking:</p>
                 <div class="example-buttons">
-                    <button class="example-question">Tell me about Shreya's e-commerce experience</button>
-                    <button class="example-question">What tools and technologies does she use?</button>
-                    <button class="example-question">What are her key achievements?</button>
+                    <button class="suggestion-chip">Tell me about Shreya's e-commerce experience</button>
+                    <button class="suggestion-chip">What tools and technologies does she use?</button>
+                    <button class="suggestion-chip">What are her key achievements?</button>
                 </div>
             </div>
 
-            <!-- Chat Container -->
-            <div id="chatContainer" class="chat-container">
-                <div class="welcome-message">
-                    <div class="message-icon">👋</div>
-                    <p>Hi! I'm an AI assistant that can answer questions about Shreya's professional experience, skills,
-                        and background. What would you like to know?</p>
-                </div>
-            </div>
-
-            <!-- Search Input -->
+            <!-- Input Area -->
             <div class="search-input-container">
-                <input type="text" id="searchInput" placeholder="Ask anything about Shreya's experience..."
+                <input type="text" id="aiSearchInput" placeholder="Ask anything about Shreya's experience..."
                     class="search-input" />
-                <button id="searchButton" class="search-submit-btn">
+                <button id="sendAIRequest" class="search-submit-btn">
                     <span>Send</span>
                     <span class="send-icon">→</span>
                 </button>
