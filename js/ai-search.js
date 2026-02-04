@@ -67,6 +67,11 @@ class AISearch {
 
         try {
             const resumeContent = this.getResumeContext();
+
+            // Debug: Log what we're sending
+            console.log('Resume context length:', resumeContent.length);
+            console.log('Resume context preview:', resumeContent.substring(0, 200));
+
             const response = await fetch('/api/ask-ai', {
                 method: 'POST',
                 headers: {

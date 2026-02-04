@@ -98,10 +98,15 @@ Guidelines:
 - Keep responses focused and to the point (2-3 paragraphs max)
 - When mentioning companies or projects, include relevant context
 
+
 Resume Data:
 ${JSON.stringify(resumeData, null, 2)}`;
 
-// Export for use in other modules
+// Make resumeData available globally in the browser
+window.resumeData = resumeData;
+window.systemPrompt = systemPrompt;
+
+// Export for use in other modules (Node.js)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { resumeData, systemPrompt };
 }
