@@ -93,17 +93,27 @@ class AISearch {
                 return;
             }
 
+            // Log the response for debugging (can be removed later)
+            console.log('API Response:', data);
+
             if (data.error) {
-                this.addMessage('error', `Error: ${data.error}`);
+                // Handle error properly whether it's a string or object
+                const errorMsg = typeof data.error === 'string'
+                    ? data.error
+                    : (data.error.message || JSON.stringify(data.error));
+                this.addMessage('error', `Error: ${errorMsg}`);
             } else if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                 const answer = data.candidates[0].content.parts[0].text;
                 this.addMessage('assistant', answer);
             } else {
-                this.addMessage('error', 'I couldn\'t find a specific answer for that. Try rephrasing?');
+                // Show what we received if it's not in expected format
+                console.error('Unexpected API response format:', data);
+                this.addMessage('error', 'Received unexpected response format. Please check the console for details.');
             }
         } catch (error) {
             document.getElementById(loadingId)?.remove();
-            this.addMessage('error', `Something went wrong: ${error.message}`);
+            console.error('AI Search Error:', error);
+            this.addMessage('error', `Something went wrong: ${error.message || 'Unknown error'}`);
         }
     }
 
