@@ -64,14 +64,38 @@ class AISearch {
                 })
             });
 
-            const data = await response.json();
-
             // Remove loading indicator
             document.getElementById(loadingId)?.remove();
 
+            // Check if response is ok
+            if (!response.ok) {
+                if (response.status === 404) {
+                    this.addMessage('error', 'AI feature is only available on the deployed site. Please visit the live portfolio to use this feature.');
+                    return;
+                }
+
+                // Try to parse error message
+                try {
+                    const errorData = await response.json();
+                    this.addMessage('error', `Error: ${errorData.error || 'Server error'}`);
+                } catch {
+                    this.addMessage('error', `Server error (${response.status}). Please try again later.`);
+                }
+                return;
+            }
+
+            // Parse JSON response
+            let data;
+            try {
+                data = await response.json();
+            } catch (jsonError) {
+                this.addMessage('error', 'Received invalid response from server. The API key may not be configured in Cloudflare.');
+                return;
+            }
+
             if (data.error) {
                 this.addMessage('error', `Error: ${data.error}`);
-            } else if (data.candidates && data.candidates[0].content.parts[0].text) {
+            } else if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                 const answer = data.candidates[0].content.parts[0].text;
                 this.addMessage('assistant', answer);
             } else {
