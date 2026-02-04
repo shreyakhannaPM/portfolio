@@ -8,6 +8,10 @@ class AISearch {
         this.chatMessages = document.getElementById('aiChatMessages');
         this.suggestions = document.querySelectorAll('.suggestion-chip');
 
+        // Rate limiting
+        this.lastRequestTime = 0;
+        this.minRequestInterval = 3000; // 3 seconds between requests
+
         this.init();
     }
 
@@ -45,6 +49,16 @@ class AISearch {
     async handleSearch() {
         const question = this.searchInput.value.trim();
         if (!question) return;
+
+        // Rate limiting check
+        const now = Date.now();
+        const timeSinceLastRequest = now - this.lastRequestTime;
+        if (timeSinceLastRequest < this.minRequestInterval) {
+            const waitTime = Math.ceil((this.minRequestInterval - timeSinceLastRequest) / 1000);
+            this.addMessage('error', `Please wait ${waitTime} seconds before sending another question.`);
+            return;
+        }
+        this.lastRequestTime = now;
 
         this.addMessage('user', question);
         this.searchInput.value = '';
@@ -98,9 +112,15 @@ class AISearch {
 
             if (data.error) {
                 // Handle error properly whether it's a string or object
-                const errorMsg = typeof data.error === 'string'
+                let errorMsg = typeof data.error === 'string'
                     ? data.error
                     : (data.error.message || JSON.stringify(data.error));
+
+                // Special handling for quota/rate limit errors
+                if (errorMsg.includes('Resource exhausted') || errorMsg.includes('429')) {
+                    errorMsg = 'API quota limit reached. Please try again in a few minutes. The free tier has limited requests per day.';
+                }
+
                 this.addMessage('error', `Error: ${errorMsg}`);
             } else if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                 const answer = data.candidates[0].content.parts[0].text;
