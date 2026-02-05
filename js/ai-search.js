@@ -147,13 +147,26 @@ class AISearch {
         if (!window.resumeData) return "Portfolio information not found.";
 
         const data = window.resumeData;
+
+        // Format experience array
+        const experienceStr = data.experience.map(exp => `
+            Role: ${exp.role}
+            Company: ${exp.company}
+            Period: ${exp.duration}
+            Achievements:
+            ${exp.achievements ? exp.achievements.map(a => `- ${a}`).join('\n') : 'N/A'}
+        `).join('\n\n');
+
         return `
             Name: ${data.name}
-            Title: ${data.title}
+            Title: ${data.role || data.title}
             Summary: ${data.summary}
-            Experience: ${data.experience.map(exp => `${exp.role} at ${exp.company} (${exp.period}): ${exp.description}`).join('\n')}
-            Skills: ${JSON.stringify(data.skills)}
-            Achievements: ${data.achievements.join('\n')}
+            
+            === EXPERIENCE ===
+            ${experienceStr}
+            
+            === SKILLS ===
+            ${JSON.stringify(data.skills, null, 2)}
         `;
     }
 
