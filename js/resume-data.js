@@ -58,15 +58,13 @@ const resumeData = {
             "major": "Product Management",
             "institution": "Northwestern University",
             "location": "Illinois, US",
-            "duration": "Sep 2022 - Dec 2023",
             "additionalRole": "Research Associate (Large Language Models for Supply Chain Optimization)"
         },
         {
             "degree": "Bachelor of Technology",
             "major": "Computer Science and Engineering",
             "institution": "SRM Institute of Science and Technology",
-            "location": "Chennai, India",
-            "duration": "Jun 2015 - May 2019"
+            "location": "Chennai, India"
         }
     ],
     "skills": {
